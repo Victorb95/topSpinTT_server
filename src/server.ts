@@ -1,6 +1,6 @@
 import express from 'express';
 import 'dotenv/config';
-import { createMatch } from './Match';
+import { Player, createChallenge } from './Player';
 
 const app = express();
 const PORT = process.env.PORT;
@@ -11,10 +11,14 @@ app.get('/', (req, res) => {
 	res.send('Hello Wolrd');
 });
 
-app.post('/createMatch', (req, res) => {
-	const {player1, player2 } = req.body;
-	const match = createMatch(player1,player2)
+app.post("/newChallenge", async (req, res) => {
+	const { playerId, receiverId, date } = req.body;
+
+	const resp = await createChallenge(playerId, receiverId, date);
+	if (resp) res.json(resp);
 });
+
+
 
 app.listen(PORT, () => {
 	console.log(`App running on port ${PORT}`);
